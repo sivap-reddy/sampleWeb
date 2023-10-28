@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KVM Exports</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mukta&family=Permanent+Marker&display=swap" rel="stylesheet">
+    <style>
+        /* Add padding between input fields */
+        .image-upload-input {
+            margin-top: 10px;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            background-color: #000;
+            color: white;
+            padding: 10px 0;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        .body {
+            background: linear-gradient(#000, #3e205a);
+        }
+
+        .user-profile {
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        .main {
+            background: linear-gradient(#000, #3e205a);
+            padding-top: 60px;
+        }
+
+        .profile-picture {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-bottom: 20px;
+            background-color: #166ec5;
+        }
+
+        .profile-picture img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .user-profile .profile-details {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .add-property-btn {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .image-box {
+            display: inline-block;
+            margin: 5px;
+        }
+
+        .custom-file-upload {
+            border: 1px solid #ccc;
+            display: inline-block;
+            padding: 6px 12px;
+            cursor: pointer;
+        }
+
+        .custom-file-upload:hover {
+            background: #f0f0f0;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 10px;
+            border: 1px solid #888;
+            width: 50%;
+
+        }
+
+        /* Form Styles */
+        #propertyForm {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 10px;
+            padding: 0px 5px 5px 0px;
+        }
+
+        select,
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .property-block {
+            background-color: #7996f3;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 15px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        #sucessMessage {
+            display: block;
+            background-color: #dff0d8;
+            color: #3c763d;
+            border: 1px solid #d6e9c6;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-size: 16px;
+        }
+
+        .close-button {
+            font-size: 20px;
+            font-weight: 800;
+            background: none;
+            border: none;
+            padding: 5px;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            margin-top: -15px;
+        }
+
+        .nav-link {
+            color: white;
+            font-weight: 500;
+            padding-right: 15px;
+        }
+
+        .nav-link:hover {
+            color: #ffe972;
+        }
+
+        .navbar-brand {
+            color: #ffe972;
+            margin-left: 7%;
+            font-family: 'Mukta', sans-serif;
+            font-family: 'Permanent Marker', cursive;
+            font-size: 25px;
+        }
+
+        .navbar-brand:hover {
+            color: #ffe972;
+        }
+
+        .listPropertyBtn {
+            border: none;
+            width: 195px;
+            border-radius: 4px;
+            height: 40px;
+            font-weight: 500;
+            background-color: #ffe972;
+            color: #000;
+        }
+
+        #listPropertyBtn {
+            animation: listPropertyBtn 0.8s ease-in infinite;
+        }
+
+        @keyframes listPropertyBtn {
+            25% {
+                transform: scale(0.9);
+            }
+
+            75% {
+                transform: scale(1.1);
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #000; color: white;">
+            <a class="navbar-brand" href="#">KVM Exports</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse" id="navbarNav" style="color: white;">
+                <ul class="navbar-nav" style="color: white; margin-left: auto;  padding-right: 2%;">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="./index.html" style="padding-right: 20px;">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" style="padding-right: 20px;">Add Products</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div style="    background: linear-gradient(#13294b, #1e96fc); height: 700px;">
+            <div class="user-profile">
+                <img src="data:image/svg+xml;utf8 ,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100'><text x='25' y='70' font-family='Arial' font-size='18' fill='%23495057'>KVM</text></svg>"
+                    ; alt="Profile Picture" alt="Profile Picture" style="margin-top: 8%;" />
+                <div class="profile-details">
+                    <p>Name: **********</p>
+                    <p>Email: #######@example.com</p>
+                    <p>Contact: 123-456-7890</p>
+                </div>
+            </div>
+
+            <div class="add-property-btn">
+                <button id="listPropertyBtn" class="listPropertyBtn">List your product now</button>
+            </div>
+
+            <div id="myModal" class="modal">
+                <div class="modal-content">
+                    <p id="sucessMessage" style="display: none"></p>
+                    <form id="productForm">
+                        <label for="productName">Product Name<span style="color: red;">*</span>:</label>
+                        <input type="text" id="productName" name="productName" placeholder="Enter product name"
+                            required>
+
+                        <label for="productType">Product Type<span style="color: red;">*</span>:</label>
+                        <input type="text" id="productType" name="productType" placeholder="Enter product type"
+                            required>
+
+                        <label for="productSize">Product Size<span style="color: red;">*</span>:</label>
+                        <div class="input-group">
+                            <input type="text" id="productSize" name="productSize" class="form-control"
+                                placeholder="Enter product size" required />
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="sizeUnit">Inches</span>
+                            </div>
+                        </div>
+
+                        <select id="sizeUnitSelector">
+                            <option value="inches">Inches</option>
+                        </select>
+
+                        <label for="productColor">Product Color<span style="color: red;">*</span>:</label>
+                        <input type="text" id="productColor" name="productColor" placeholder="Enter product color"
+                            required>
+
+                        <label for="productPrice">Product price<span style="color: red;">*</span>:</label>
+                        <div class="input-with-symbol">
+                            <input type="text" id="productPrice" name="productPrice" placeholder="Enter product price"
+                                required>
+                            <select id="currencySelector" style="display: none;">
+                                <option value="$">USD</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group mt-lg-3">
+                            <label for="allOurImages">Images:</label>
+                            <div id="imageInputContainer">
+                                <input type="file" class="image-upload-input" name="productImages[]" multiple>
+                            </div>
+                            <button id="addImage" type="button" class="btn btn-primary mt-1">&#10011; Add More
+                                Images</button>
+                            <p id="errorText" class="error-text" style="color: red;"></p>
+                        </div>
+
+
+                        <br>
+                        <button type="submit" id="Submit">
+                            Submit
+                        </button>
+                    </form>
+                    <button id="closeModal" class="close-button">×</button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 KVM Exports. All rights reserved.</p>
+        <p>Contact us at: example@email.com | Phone: 123-456-7890</p>
+    </footer>
+
+</body>
+<script type="module">
+    //------------------------Firebase Config-----------------------
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-app.js";
+    import {
+        ref,
+        uploadBytesResumable,
+        uploadBytes,
+        getDownloadURL,
+        getStorage,
+    } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-storage.js";
+    import {
+        getFirestore,
+        collection,
+        query,
+        where,
+        getDocs,
+        doc,
+        getDoc,
+        setDoc,
+    } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCni58nYfqke3dQ0YF85mUG0GelTXd4wbU",
+        authDomain: "insta-web-48e44.firebaseapp.com",
+        databaseURL: "https://insta-web-48e44-default-rtdb.firebaseio.com",
+        projectId: "insta-web-48e44",
+        storageBucket: "insta-web-48e44.appspot.com",
+        messagingSenderId: "685569844225",
+        appId: "1:685569844225:web:ee6d8428a9616b11f44c00",
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const firestore = getFirestore(app);
+    const storage = getStorage(app);
+
+    const productsCollection = collection(firestore, "products");
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const listPropertyBtn = document.getElementById("listPropertyBtn");
+        const modal = document.getElementById("myModal");
+        const closeModal = document.getElementById("closeModal");
+        const addImageBtn = document.getElementById("addImage");
+        const imageInputContainer = document.getElementById("imageInputContainer");
+        const productForm = document.getElementById("productForm");
+        const errorText = document.getElementById("errorText");
+
+        listPropertyBtn.addEventListener("click", function () {
+            modal.style.display = "block";
+        });
+
+        closeModal.addEventListener("click", function () {
+            modal.style.display = "none";
+        });
+        const productPriceInput = document.getElementById('productPrice');
+        const currencySelector = document.getElementById('currencySelector');
+
+        const selectedCurrency = '$';
+        productPriceInput.placeholder = `Enter product price (${selectedCurrency})`;
+
+
+        const sizeUnitSelector = document.getElementById('sizeUnitSelector');
+        const sizeUnit = document.getElementById('sizeUnit');
+
+        // Add an event listener to the unit selector
+        sizeUnitSelector.addEventListener('change', function () {
+            // Get the selected unit
+            const selectedUnit = sizeUnitSelector.value;
+
+            // Update the size unit text
+            sizeUnit.textContent = selectedUnit;
+        });
+
+
+        addImageBtn.addEventListener("click", function () {
+            const newImageInput = document.createElement("input");
+            newImageInput.type = "file";
+            newImageInput.className = "image-upload-input";
+            newImageInput.name = "productImages[]";
+            newImageInput.multiple = true;
+            imageInputContainer.appendChild(newImageInput);
+
+            // Add padding after adding a new input field
+            newImageInput.style.marginTop = "10px";
+        });
+
+        productForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            errorText.textContent = ""; // Clear any previous error message
+
+            const productName = document.getElementById("productName").value;
+            const productType = document.getElementById("productType").value;
+            const productSize = document.getElementById("productSize").value;
+            const productColor = document.getElementById("productColor").value;
+            const productPrice = document.getElementById("productPrice").value;
+
+            const productImageInputs = document.querySelectorAll(".image-upload-input");
+            const imageUrls = [];
+
+            // Check if at least one image is selected
+            let hasSelectedImage = false;
+
+            for (const input of productImageInputs) {
+                const productImageFile = input.files[0];
+
+                if (productImageFile) {
+                    hasSelectedImage = true;
+
+                    // Show confirmation message during upload
+                    errorText.textContent = "Uploading images, please wait...";
+
+                    const imageStorageRef = ref(storage, "productImages/" + productImageFile.name);
+
+                    try {
+                        const uploadTask = uploadBytesResumable(imageStorageRef, productImageFile);
+                        await uploadTask;
+
+                        const imageUrl = await getDownloadURL(imageStorageRef);
+                        imageUrls.push(imageUrl);
+                    } catch (error) {
+                        displayErrorMessage("Error: Unable to upload one or more files.");
+                    }
+                }
+            }
+
+            if (!hasSelectedImage) {
+                errorText.textContent = "Please select at least one image.";
+                return;
+            }
+
+            const productData = {
+                productName,
+                productType,
+                productSize,
+                productColor,
+                productPrice,
+                imageUrls,
+            };
+
+            try {
+                await setDoc(doc(productsCollection), productData);
+
+                const successMessage = document.getElementById("sucessMessage");
+                successMessage.style.display = "block";
+                successMessage.textContent = "Product added successfully";
+
+                // Clear the input fields
+                document.getElementById("productName").value = "";
+                document.getElementById("productType").value = "";
+                document.getElementById("productSize").value = "";
+                document.getElementById("productColor").value = "";
+                document.getElementById("productPrice").value = "";
+
+                // Remove all image input fields
+                productImageInputs.forEach((input) => {
+                    imageInputContainer.removeChild(input);
+                });
+
+                // Clone the image input container for further updates
+                const clonedImageContainer = imageInputContainer.cloneNode(true);
+                productForm.appendChild(clonedImageContainer);
+
+                errorText.textContent = ""; // Clear confirmation message
+
+                setTimeout(() => {
+                    successMessage.style.display = "none";
+                }, 2000);
+            } catch (error) {
+                displayErrorMessage("Error: Unable to add the product to Firestore.");
+            }
+        });
+    });
+
+</script>
+
+</html>

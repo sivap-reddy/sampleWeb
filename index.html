@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KVM Exports</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header styles */
+        .navbar {
+            background-color: #1e96fc;
+        }
+
+        .navbar-brand {
+            padding: 10px 20px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .navbar-toggler-icon {
+            background-color: #fff;
+        }
+
+        .navbar-nav .nav-link {
+            font-size: 1.1rem;
+            color: #fff;
+            margin-right: 20px;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: black;
+        }
+
+        /* Main section styles */
+        main {
+            background: linear-gradient(#13294b, #1e96fc);
+            color: #fff;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 36px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        /* Search section styles */
+        #search-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding: 30px;
+            border: 1px solid #e6e6e6;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #apply-filters-button {
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #apply-filters-button:hover {
+            background-color: #45a049;
+        }
+
+        .product-grid {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        /* Product card styles */
+        .product-card {
+            width: calc(33.33% - 20px);
+            margin: 10px;
+            box-sizing: border-box;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @media (max-width: 768px) {
+            .product-card {
+                width: calc(50% - 20px);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .product-card {
+                width: calc(100% - 20px);
+            }
+        }
+
+        .product-carousel {
+            position: relative;
+        }
+
+        .product-carousel img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .product-details {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+
+        /* Footer styles */
+        footer {
+            text-align: center;
+            background-color: #000;
+            color: #fff;
+            padding: 10px 0;
+        }
+
+        footer p {
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <!-- Modify the navbar class to change the color -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-primary">
+            <a class="navbar-brand text-black" href="#">KVM Exports</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse" id="navbarNav" style="color: white;">
+                <ul class="navbar-nav" style="color: white; margin-left: auto;  padding-right: 2%;">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#" style="padding-right: 20px;">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./addProduct.html" style="padding-right: 20px;">Add Products</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div style="background: linear-gradient(#13294b, #1e96fc)">
+            <h1>PRODUCTS</h1>
+            <div id="apply-filters" class="text-center mt-4">
+                <button id="apply-filters-button">Apply Filters</button>
+            </div>
+
+            <div id="search-section" class="flex justify-center items-center" style="display: none">
+                <div class="w-1/3 p-6 bg-white rounded shadow-lg" style="color: black">
+                    <select id="product-name" class="w-full p-2 mb-4 border rounded">
+                        <option disabled selected value="">
+                            Select Product Name
+                        </option>
+                    </select>
+                    <select id="product-type" class="w-full p-2 mb-4 border rounded">
+                        <option disabled selected value="">
+                            Select Product Type
+                        </option>
+                        <!-- options will be added dynamically -->
+                    </select>
+                    <select id="product-size" class="w-full p-2 mb-4 border rounded">
+                        <option disabled selected value="">
+                            Select Product Size
+                        </option>
+                        <!-- options will be added dynamically -->
+                    </select>
+                    <select id="product-color" class="w-full p-2 mb-4 border rounded">
+                        <option disabled selected value="">
+                            Select Product Color
+                        </option>
+                        <!-- options will be added dynamically -->
+                    </select>
+
+                    <div id="slider-section" class="mb-4">
+                        <div id="price-slider-container">
+                            <label for="rent-slider" class="mb-2 block">Select Your Budget Range (price):</label>
+                            <input type="range" id="price-slider" min="1" max="100000" value="1" step="100"
+                                class="w-full" />
+                            <span id="price-range-values" class="block text-center mt-2">
+                                Min: 1 Max: 100000 Current: 1
+                            </span>
+                        </div>
+                    </div>
+                    <div class="flex justify-between">
+                        <button id="search-button" class="w-1/2 p-2 bg-blue-500 text-white rounded hover:bg-blue-700">
+                            Search
+                        </button>
+                        <button id="reset-button" class="w-1/2 p-2 bg-red-500 text-white rounded hover:bg-red-700">
+                            Reset
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <section class="recent-listings">
+                <div id="product-container" class="product-grid">
+                    <!-- product data will be dynamically added here -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 KVM Exports. All rights reserved.</p>
+        <p>Contact us at: example@email.com | Phone: 123-456-7890</p>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script type="module">
+        //------------------------Firebase Config-----------------------
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-app.js";
+        import {
+            ref,
+            uploadBytesResumable,
+            uploadBytes,
+            getDownloadURL,
+            getStorage,
+        } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-storage.js";
+        import {
+            getFirestore,
+            collection,
+            query,
+            where,
+            getDocs,
+            doc,
+            getDoc,
+            setDoc,
+        } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCni58nYfqke3dQ0YF85mUG0GelTXd4wbU",
+            authDomain: "insta-web-48e44.firebaseapp.com",
+            databaseURL: "https://insta-web-48e44-default-rtdb.firebaseio.com",
+            projectId: "insta-web-48e44",
+            storageBucket: "insta-web-48e44.appspot.com",
+            messagingSenderId: "685569844225",
+            appId: "1:685569844225:web:ee6d8428a9616b11f44c00",
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const firestore = getFirestore(app);
+        const storage = getStorage(app);
+
+        const productsCollection = collection(firestore, "products");
+
+        // Function to fetch product data from Firestore and populate the section
+        async function populateProductData() {
+            try {
+                const querySnapshot = await getDocs(productsCollection);
+
+                querySnapshot.forEach((doc) => {
+                    const productData = doc.data();
+                    // Create HTML elements to display the product data and append them to the section.
+                    createProductCard(productData);
+                });
+            } catch (error) {
+                console.error('Error fetching products:', error);
+            }
+        }
+
+        // Function to create a product card and append it to the section
+        function createProductCard(productData) {
+            // Create a container for the product card
+            const productCardContainer = document.getElementById('product-container');
+
+            // Create the product card element
+            const productCard = document.createElement('div');
+            productCard.classList.add('product-card');
+
+            // Create an image container for product images
+            const imageCarousel = document.createElement('div');
+            imageCarousel.classList.add('product-carousel');
+
+            // Loop through the image URLs and create image elements
+            for (const imageUrl of productData.imageUrls) {
+                const productImage = document.createElement('img');
+                productImage.src = imageUrl;
+                imageCarousel.appendChild(productImage);
+            }
+
+            // Create a div for product details
+            const productDetails = document.createElement('div');
+            productDetails.classList.add('product-details');
+
+            // Modify the style for positioning product details
+            productDetails.style.position = 'absolute';
+            productDetails.style.bottom = '10px';
+            productDetails.style.left = '10px';
+            productDetails.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+            productDetails.style.color = '#fff';
+            productDetails.style.zIndex = '1'; // Place product details above the images
+
+            // Create individual elements for each product detail
+            const productName = document.createElement('p');
+            productName.textContent = `Name: ${productData.productName}`;
+
+            const productType = document.createElement('p');
+            productType.textContent = `Type: ${productData.productType}`;
+
+            const productSize = document.createElement('p');
+            productSize.textContent = `Size: ${productData.productSize}`;
+
+            const productColor = document.createElement('p');
+            productColor.textContent = `Color: ${productData.productColor}`;
+
+            const productPrice = document.createElement('p');
+            productPrice.textContent = `Price: $${productData.productPrice}`;
+
+            // Append the individual detail elements to the product details container
+            productDetails.appendChild(productName);
+            productDetails.appendChild(productType);
+            productDetails.appendChild(productSize);
+            productDetails.appendChild(productColor);
+            productDetails.appendChild(productPrice);
+
+            // Append the image container and the product details to the product card
+            productCard.appendChild(imageCarousel);
+            productCard.appendChild(productDetails);
+
+
+            $(imageCarousel).slick({
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                arrows: false,
+                dots: false,
+                autoplay: true,
+                autoplaySpeed: 3000,
+            });
+
+
+            // Append the product card to the section
+            productCardContainer.appendChild(productCard);
+        }
+
+        // Call the function to populate the product data
+        populateProductData();
+
+
+        async function populateDropdown(selectId, fieldName) {
+            const querySnapshot = await getDocs(productsCollection);
+            const selectElement = document.getElementById(selectId);
+            let optionsAdded = [];
+            querySnapshot.forEach((doc) => {
+                const fieldValue = doc.data()[fieldName];
+                if (!optionsAdded.includes(fieldValue)) {
+                    const option = document.createElement("option");
+                    option.value = fieldValue;
+                    option.text = fieldValue;
+                    selectElement.appendChild(option);
+                    optionsAdded.push(fieldValue);
+                }
+            });
+        }
+        populateDropdown("product-name", "productName");
+        populateDropdown("product-type", "productType");
+        populateDropdown("product-size", "productSize");
+        populateDropdown("product-color", "productColor");
+
+        document
+            .getElementById("apply-filters-button")
+            .addEventListener("click", function () {
+                var searchSection = document.getElementById("search-section");
+                if (searchSection.style.display === "none") {
+                    searchSection.style.display = "block";
+                } else {
+                    searchSection.style.display = "none";
+                }
+            });
+
+        const priceSlider = document.getElementById("price-slider");
+        const priceRangeValues = document.getElementById("price-range-values");
+
+        priceSlider.addEventListener("input", function () {
+            const maxPrice = 100000;
+            const minPrice = 1;
+            const currentValue = priceSlider.value;
+
+            priceRangeValues.textContent = `Min: ${minPrice} Max: ${maxPrice} Current: ${currentValue}`;
+        });
+
+        document
+            .getElementById("reset-button")
+            .addEventListener("click", function () {
+                document.getElementById("product-name").selectedIndex = 0;
+                document.getElementById("product-type").selectedIndex = 0;
+                document.getElementById("product-size").selectedIndex = 0;
+                document.getElementById("product-color").selectedIndex = 0;
+                document.getElementById("price-slider").value = 1;
+                document.getElementById("price-range-values").textContent =
+                    "Min: 1 Max: 100000 Current: 1";
+                populateProductData();
+            });
+
+        document
+            .getElementById("search-button")
+            .addEventListener("click", function () {
+                const productName = document.getElementById("product-name").value;
+                const productType = document.getElementById("product-type").value;
+                const productSize = document.getElementById("product-size").value;
+                const productColor = document.getElementById("product-color").value;
+                let priceSliderValue = parseInt(
+                    document.getElementById("price-slider").value
+                );
+                if (priceSliderValue === 1) {
+                    priceSliderValue = 100000;
+                }
+                console.log(priceSliderValue);
+                document.getElementById("product-container").innerHTML = "";
+                getDocs(productsCollection)
+                    .then((querySnapshot) => {
+                        querySnapshot.forEach((doc) => {
+                            const item = doc.data();
+                            console.log(
+                                isNaN(priceSliderValue) ||
+                                item.productPrice >= priceSliderValue
+                            );
+                            if (
+                                (!productName || item.productName === productName) &&
+                                (!productType || item.productType === productType) &&
+                                (!productSize || item.productSize === productSize) &&
+                                (!productColor || item.productColor === productColor) &&
+                                (isNaN(priceSliderValue) ||
+                                    item.productPrice <= priceSliderValue)
+                            ) {
+                                console.log(item);
+                                createProductCard(item);
+                            }
+                        });
+                    })
+                    .catch((error) => {
+                        console.log("Error getting documents: ", error);
+                    });
+            });
+
+
+    </script>
+</body>
+
+</html>
