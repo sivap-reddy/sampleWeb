@@ -118,6 +118,7 @@
             }
         }
 
+
         .product-carousel {
             position: relative;
         }
@@ -182,28 +183,20 @@
             </div>
 
             <div id="search-section" class="flex justify-center items-center" style="display: none">
-                <div class="w-1/3 p-6 bg-white rounded shadow-lg" style="color: black">
+                <div class="w-full p-6 bg-white rounded shadow-lg" style="color: black">
                     <select id="product-name" class="w-full p-2 mb-4 border rounded">
-                        <option disabled selected value="">
-                            Select Product Name
-                        </option>
+                        <option disabled selected value="">Select Product Name</option>
                     </select>
                     <select id="product-type" class="w-full p-2 mb-4 border rounded">
-                        <option disabled selected value="">
-                            Select Product Type
-                        </option>
+                        <option disabled selected value="">Select Product Type</option>
                         <!-- options will be added dynamically -->
                     </select>
                     <select id="product-size" class="w-full p-2 mb-4 border rounded">
-                        <option disabled selected value="">
-                            Select Product Size
-                        </option>
+                        <option disabled selected value="">Select Product Size</option>
                         <!-- options will be added dynamically -->
                     </select>
                     <select id="product-color" class="w-full p-2 mb-4 border rounded">
-                        <option disabled selected value="">
-                            Select Product Color
-                        </option>
+                        <option disabled selected value="">Select Product Color</option>
                         <!-- options will be added dynamically -->
                     </select>
 
@@ -217,15 +210,19 @@
                             </span>
                         </div>
                     </div>
-                    <div class="flex justify-between">
-                        <button id="search-button" class="w-1/2 p-2 bg-blue-500 text-white rounded hover:bg-blue-700">
+
+                    <div class="flex flex-col md:flex-row justify-between">
+                        <button id="search-button"
+                            class="w-full md:w-1/2 p-2 bg-blue-500 text-white rounded hover:bg-blue-700 mb-2 md:mb-0">
                             Search
                         </button>
-                        <button id="reset-button" class="w-1/2 p-2 bg-red-500 text-white rounded hover:bg-red-700">
+                        <button id="reset-button"
+                            class="w-full md:w-1/2 p-2 bg-red-500 text-white rounded hover:bg-red-700">
                             Reset
                         </button>
                     </div>
                 </div>
+
             </div>
             <section class="recent-listings">
                 <div id="product-container" class="product-grid">
